@@ -31,10 +31,6 @@ Here's a walkthrough of implemented user stories:
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
-## Notes
-
-Setting up the environment
-
 ## License
 
 Copyright 2016 Rathi Munukur
