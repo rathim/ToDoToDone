@@ -6,13 +6,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.SimpleDateFormat;
+
 /**
  * Created by rathimunukur on 6/29/16.
  */
 public class TodoItemDatabase extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "todoDatabase";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
 
     // Table Names
     private static final String TABLE_TODO = "items";
@@ -20,6 +22,8 @@ public class TodoItemDatabase extends SQLiteOpenHelper {
     // To Do items Table Columns
     private static final String KEY_TODO_ID = "id";
     private static final String KEY_TODO_text = "text";
+    private static final String KEY_TODO_date = "date";
+    private static final String KEY_TODO_priority = "priority";
 
     private static TodoItemDatabase sInstance;
 
@@ -36,14 +40,15 @@ public class TodoItemDatabase extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    // These is where we need to write create table statements.
     // This is called when database is created.
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_TODO_TABLE = "CREATE TABLE " + TABLE_TODO +
                 "(" +
                 KEY_TODO_ID + " INTEGER PRIMARY KEY," + // Define a primary key
-                KEY_TODO_text + " TEXT" +
+                KEY_TODO_text + " TEXT," +
+                KEY_TODO_date + " DATE," +
+                KEY_TODO_priority + " TEXT" +
                 ")";
 
         db.execSQL(CREATE_TODO_TABLE);
@@ -72,10 +77,15 @@ public class TodoItemDatabase extends SQLiteOpenHelper {
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
-            //values.put(KEY_TODO_ID, todoItem.id);
             values.put(KEY_TODO_text, todoItem.text);
 
-            // Notice how we haven't specified the primary key. SQLite auto increments the primary key column.
+            if (todoItem.duedate != null) {
+                String strDate = todoItem.dateToString(todoItem.duedate);
+                values.put(KEY_TODO_date, strDate);
+            }
+
+            values.put(KEY_TODO_priority, todoItem.priority);
+
             db.insertOrThrow(TABLE_TODO, null, values);
             db.setTransactionSuccessful();
         } catch (Exception e) {
@@ -94,8 +104,16 @@ public class TodoItemDatabase extends SQLiteOpenHelper {
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
-            //values.put(KEY_TODO_ID, todoItem.id);
+
             values.put(KEY_TODO_text, todoItem.text);
+
+            if (todoItem.duedate != null) {
+                String strDate = todoItem.dateToString(todoItem.duedate);
+                values.put(KEY_TODO_date, strDate);
+            }
+
+            values.put(KEY_TODO_priority, todoItem.priority);
+
 
             db.update(TABLE_TODO, values, KEY_TODO_ID + " = ?",
                     new String[]{String.valueOf(todoItem.id)});
@@ -142,6 +160,13 @@ public class TodoItemDatabase extends SQLiteOpenHelper {
                     {
                         item.id = id;
                         item.text = cursor.getString(cursor.getColumnIndex(KEY_TODO_text));
+                        String date = cursor.getString(cursor.getColumnIndex(KEY_TODO_date));
+                        if (date != null) {
+                            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+                            item.duedate = sdf.parse(date);
+                        }
+                        item.priority = cursor.getString(cursor.getColumnIndex(KEY_TODO_priority));
+
                         break;
                     }
                 } while(cursor.moveToNext());
@@ -161,7 +186,7 @@ public class TodoItemDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         // Query for items from the database and get a cursor back
         String ITEMS_SELECT_QUERY =
-                String.format("SELECT id _id,* FROM %s",TABLE_TODO);
+                String.format("SELECT id _id,* FROM %s ORDER BY %s ASC",TABLE_TODO,KEY_TODO_date);
         Cursor todoCursor = db.rawQuery(ITEMS_SELECT_QUERY, null);
         return todoCursor;
     }

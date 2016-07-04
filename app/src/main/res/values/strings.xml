@@ -1,7 +1,25 @@
 <resources>
-    <string name="app_name">ToDoApp</string>
+    <string name="app_name">ToDoToDone</string>
     <string name="add">Add</string>
     <string name="add_item">Add a new item...</string>
     <string name="enter_text_below">Enter text below:</string>
     <string name="save">Save</string>
+    <string name="enter_date_label">Enter the due date</string>
+    <string name="due_date_label">Enter the due date:</string>
+    <string name="time_picker_tag">time_picker</string>
+    <string name="pick_priority_label">Pick the priority of this task</string>
+    <string name="set_time_button">Set</string>
+    <string name="duedate_label">Due date:</string>
+    <string name="my_task_label">My task</string>
+    <string name="high">high</string>
+    <string name="medium">medium</string>
+    <string name="low">low</string>
+    <string name="high_label">btnHigh</string>
+    <string name="label_high">High</string>
+    <string name="label_medium">Medium</string>
+    <string name="label_low">Low</string>
+    <string name="priority_prompt_label">Priority:</string>
+    <string name="text_prompt">Enter task here...</string>
+    <string name="btn_cancel">CANCEL</string>
+    <string name="choose_priority_label">Choose priority:</string>
 </resources>

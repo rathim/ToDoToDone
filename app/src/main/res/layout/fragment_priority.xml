@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_high"
+        android:id="@+id/btnHigh"
+        android:textSize="30dp"
+        android:onClick="onRadioButtonClicked"
+        android:checked="false" />
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_medium"
+        android:id="@+id/btnMedium"
+        android:textSize="30dp"
+        android:onClick="onRadioButtonClicked"
+        android:checked="false"/>
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_low"
+        android:id="@+id/btnLow"
+        android:textSize="30dp"
+        android:onClick="onRadioButtonClicked"
+        android:checked="false" />
+
+</RadioGroup>
